@@ -1,0 +1,13 @@
+MANIFEST.in
+README.md
+requirements.txt
+setup.py
+docker_violations.egg-info/PKG-INFO
+docker_violations.egg-info/SOURCES.txt
+docker_violations.egg-info/dependency_links.txt
+docker_violations.egg-info/requires.txt
+docker_violations.egg-info/top_level.txt
+dockerviolations/__init__.py
+dockerviolations/__main__.py
+resources/logging.properties
+resources/sample

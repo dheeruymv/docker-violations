@@ -8,7 +8,7 @@ setup(
     description='Docker Violations Tool',
     license="Proprietary",
     classifiers=['License :: Other/Proprietary License'],
-    packages=['docker-violations'],
+    packages=['dockerviolations'],
     install_requires=requirements,
     include_package_data=True,
     test_suite="tests",

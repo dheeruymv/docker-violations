@@ -55,6 +55,23 @@
 							</arguments>
 						</configuration>
 					</execution>
+					<execution>
+						<id>install-dependencies</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>pip3</executable>
+							<workingDirectory>./dist</workingDirectory>
+							<arguments>
+								<argument>install</argument>
+								<argument>--proxy=http://10.158.100.6:8080</argument>
+								<argument>--user</argument>
+								<argument>docker-violations-0.1.tar.gz</argument>
+							</arguments>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
