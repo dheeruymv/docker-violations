@@ -22,7 +22,10 @@ class RuleEngine:
     def __init__(self, content_list):
         self._docker_content = content_list
         self._docker_rules = {
-            'mkdir': "Group all 'mkdir' commands into single layer"
+            'mkdir': "Group all 'mkdir' commands into single layer",
+            'label_not_present':
+            "Use LABEL Command to organize images by project, recording license info, to aid in automation",
+            'label': ""
         }
 
     def get_violations(self):
@@ -35,6 +38,17 @@ class RuleEngine:
                 "Violation": "MKDIR command can be improved",
                 "Recommendation": self._docker_rules['mkdir']
             })
+        if not self._is_label_present():
+            violations.append({
+                "Line #":
+                self._get_line_number("label"),
+                "Violation":
+                "LABEL command is not present",
+                "Recommendation":
+                self._docker_rules['label_not_present']
+            })
+        else:
+            pass
         return violations
 
     def _is_entrypoint_or_cmd_present(self):
@@ -50,9 +64,16 @@ class RuleEngine:
                 counter += 1
         return True if counter > 1 else False
 
+    def _is_label_present(self):
+        counter = 0
+        for docker_command in self._docker_content:
+            if "label" in docker_command:
+                counter += 1
+        return True if counter >= 1 else False
+
     def _get_line_number(self, pattern):
         line_numbers = ""
         for idx, content in enumerate(self._docker_content):
             if pattern in content:
                 line_numbers = line_numbers + " " + str(idx + 1)
-        return line_numbers
+        return line_numbers if line_numbers else "No Line containing the command in Docker file"
