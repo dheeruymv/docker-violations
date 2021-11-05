@@ -1,6 +1,12 @@
 # Docker-violations
 
-This tool finds the violations in the docker file 
+This tool finds the violations in the docker file.
+
+Currently it has support for the below commands.
+
+- LABEL
+- MKDIR
+- ENTRYPOINT
 
 How to install it?
 
