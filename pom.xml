@@ -61,12 +61,11 @@
 						<goals>
 							<goal>exec</goal>
 						</goals>
-						<configuration>
-							<executable>pip3</executable>
+						<configuration>							
+							<executable>pip</executable>
 							<workingDirectory>./dist</workingDirectory>
 							<arguments>
 								<argument>install</argument>
-								<argument>--proxy=http://10.158.100.6:8080</argument>
 								<argument>--user</argument>
 								<argument>docker-violations-0.1.tar.gz</argument>
 							</arguments>
