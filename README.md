@@ -30,4 +30,4 @@ Report Generation:
 
 Sample Report:
 
-	![](resources/images/sample_report.png)
+  ![](resources/images/sample_report.png)
