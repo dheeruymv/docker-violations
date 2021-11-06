@@ -21,3 +21,9 @@ How to Run it?
   python -m dockerviolations <Path of the Dockerfile in which violations to be found>
   
   Eg: python -m dockerviolations "C:\Dheeraj-PersonalData\My Git Hub Clones\docker-violations\Dockerfile"
+
+Report Generation:
+
+	After running the tool, report gets generated in a HTML page which gets opened automatically.
+	
+	This report comprises of line number(s) where the violation is present, type of violation and Recommendation.
