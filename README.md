@@ -27,3 +27,7 @@ Report Generation:
 	After running the tool, report gets generated in a HTML page which gets opened automatically.
 	
 	This report comprises of line number(s) where the violation is present, type of violation and Recommendation.
+
+Sample Report:
+
+	![](resources/images/sample_report.png)
