@@ -30,5 +30,6 @@ Report Generation:
 
 Sample Report:
 	
-	![image](https://user-images.githubusercontent.com/65417565/140614555-d3579f85-d691-4e7c-b30b-e8d9ccdf3056.png)
+	![sample_report_6thNov2021](https://user-images.githubusercontent.com/65417565/140614616-8693fdbc-9c06-4657-8b13-b08fcf6e2ecf.png)
+
 
