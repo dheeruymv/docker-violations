@@ -82,5 +82,7 @@ class RuleEngine:
         line_numbers = ""
         for idx, content in enumerate(self._docker_content):
             if pattern in content:
-                line_numbers = line_numbers + " " + str(idx + 1)
-        return line_numbers if line_numbers else "No Line containing the command in Docker file"
+                line_numbers = line_numbers + "," + str(idx + 1)
+        return line_numbers.lstrip(
+            ","
+        ) if line_numbers else "No Line containing the command in Docker file"
