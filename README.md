@@ -24,6 +24,11 @@ How to Run it?
 
 Report Generation:
 
-	After running the tool, report gets generated in a HTML page which gets opened automatically.
+  After running the tool, report gets generated in a HTML page which gets opened automatically.
 	
-	This report comprises of line number(s) where the violation is present, type of violation and Recommendation.
+  This report comprises of line number(s) where the violation is present, type of violation and Recommendation.
+
+Sample Report:
+	
+	![image](https://user-images.githubusercontent.com/65417565/140614555-d3579f85-d691-4e7c-b30b-e8d9ccdf3056.png)
+
