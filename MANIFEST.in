@@ -1,4 +1,4 @@
 include requirements.txt 
 recursive-include resources *
-recursive-include healthmonitoring *.py
+recursive-include dockerviolations *.py
 global-exclude __pycache__
