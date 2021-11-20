@@ -17,7 +17,8 @@ class RuleEngine:
             "If docker version < 1.10: Merge multiple LABEL commands to single LABEL command. If docker version >=1.10: ignore the recommendation, but as good practice merge LABEL to single command",
             "sudo_rule":
             "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu) ",
-            "add_rule": "COPY is preferred as copy does the basic copy which is transparent than ADD"
+            "add_rule":
+            "COPY is preferred as copy does the basic copy which is transparent than ADD"
         }
 
     def get_violations(self):
@@ -96,10 +97,10 @@ class RuleEngine:
             "Violation": "'sudo' found, Avoid installing!!",
             "Recommendation": self._docker_rules['sudo_rule']
         }
-    
+
     def _get_add_violation(self):
         return {
             "Line #": self._get_line_number("ADD "),
             "Violation": "ADD is not preferred for copying of file(s)",
             "Recommendation": self._docker_rules['add_rule']
-            }
+        }
