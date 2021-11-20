@@ -6,6 +6,7 @@ Currently it has support for the below commands.
 
 - LABEL
 - MKDIR
+- SUDO
 - ENTRYPOINT
 
 How to install it?
