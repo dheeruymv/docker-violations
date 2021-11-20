@@ -16,7 +16,8 @@ class RuleEngine:
             'multiple_labels_rule':
             "If docker version < 1.10: Merge multiple LABEL commands to single LABEL command. If docker version >=1.10: ignore the recommendation, but as good practice merge LABEL to single command",
             "sudo_rule":
-            "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu) "
+            "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu) ",
+            "add_rule": "COPY is preferred as copy does the basic copy which is transparent than ADD"
         }
 
     def get_violations(self):
@@ -35,6 +36,8 @@ class RuleEngine:
         violations.append(self._get_label_violations())
         if self._check_sudo_presence():
             violations.append(self._get_sudo_violation())
+        if self._check_add_presence():
+            violations.append(self._get_add_violation())
         return violations
 
     def _is_entrypoint_or_cmd_present(self):
@@ -82,7 +85,10 @@ class RuleEngine:
         ) if line_numbers else "No Line containing the command in Docker file"
 
     def _check_sudo_presence(self):
-        return True if "SUDO" or "sudo" in self._content else False
+        return True if "SUDO" or "sudo" in self._docker_content else False
+
+    def _check_add_presence(self):
+        return True if "ADD" or "add" in self._docker_content else False
 
     def _get_sudo_violation(self):
         return {
@@ -90,3 +96,10 @@ class RuleEngine:
             "Violation": "'sudo' found, Avoid installing!!",
             "Recommendation": self._docker_rules['sudo_rule']
         }
+    
+    def _get_add_violation(self):
+        return {
+            "Line #": self._get_line_number("ADD "),
+            "Violation": "ADD is not preferred for copying of file(s)",
+            "Recommendation": self._docker_rules['add_rule']
+            }
