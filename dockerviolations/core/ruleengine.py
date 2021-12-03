@@ -18,7 +18,9 @@ class RuleEngine:
             "sudo_rule":
             "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu) ",
             "add_rule":
-            "COPY is preferred as copy does the basic copy which is transparent than ADD"
+            "COPY is preferred as copy does the basic copy which is transparent than ADD",
+            "base_image_rule":
+            "Tag the version of the image explicitly, never rely on 'latest' as tag"
         }
 
     def get_violations(self):
@@ -39,6 +41,8 @@ class RuleEngine:
             violations.append(self._get_sudo_violation())
         if self._check_add_presence():
             violations.append(self._get_add_violation())
+        if self._check_base_image_violation():
+            violations.append(self._get_base_image_violation())
         return violations
 
     def _is_entrypoint_or_cmd_present(self):
@@ -103,4 +107,17 @@ class RuleEngine:
             "Line #": self._get_line_number("ADD "),
             "Violation": "ADD is not preferred for copying of file(s)",
             "Recommendation": self._docker_rules['add_rule']
+        }
+
+    def _check_base_image_violation(self):
+        base_image_line = [
+            command for command in self._docker_content if "FROM" in command
+        ][0]
+        return True if ":" not in base_image_line else False
+
+    def _get_base_image_violation(self):
+        return {
+            "Line #": self._get_line_number("FROM "),
+            "Violation": "Tag the version of image explicitly",
+            "Recommendation": self._docker_rules['base_image_rule']
         }
