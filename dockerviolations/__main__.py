@@ -15,8 +15,9 @@ logger = LoggerUtil().get_logger()
 
 def main():
     docker_file_path = sys.argv[1]
+    print("Docker file path in code is ", docker_file_path)
     logger.info("Processing the docker file '%s'", Path(docker_file_path).name)
-    DockerViolations(docker_file_path).run()
+    return DockerViolations(docker_file_path).run()
 
 
 class DockerViolations:
@@ -28,6 +29,7 @@ class DockerViolations:
         violations = Parser(content).parse_for_violations()
         logger.info("Violations in main has %s", violations)
         Generator(violations).generate_report()
+        return violations
 
 
 if __name__ == '__main__':
