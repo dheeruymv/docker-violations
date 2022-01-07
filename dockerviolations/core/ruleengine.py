@@ -3,6 +3,7 @@ Created on 20-Nov-2021
 
 @author: dheer
 '''
+import re
 
 
 class RuleEngine:
@@ -18,9 +19,11 @@ class RuleEngine:
             "sudo_rule":
             "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu) ",
             "add_rule":
-            "COPY is preferred as copy does the basic copy which is transparent than ADD",
+            "COPY is preferred. As copy does the basic copy which is transparent than ADD",
             "base_image_rule":
-            "Tag the version of the image explicitly, never rely on 'latest' as tag"
+            "Tag the version of the image explicitly, never rely on 'latest' as tag",
+            "dist_rule":
+            "Dist files like .tar.gz/.whl should be downloaded from the repo"
         }
 
     def get_violations(self):
@@ -43,6 +46,8 @@ class RuleEngine:
             violations.append(self._get_add_violation())
         if self._check_base_image_violation():
             violations.append(self._get_base_image_violation())
+        if self._check_for_dists():
+            violations.append(self._get_dists_violation())
         return violations
 
     def _is_entrypoint_or_cmd_present(self):
@@ -80,14 +85,23 @@ class RuleEngine:
                 counter += 1
         return counter
 
-    def _get_line_number(self, pattern):
+    def _get_line_number(self, pattern=None, regex=None):
         line_numbers = ""
-        for idx, content in enumerate(self._docker_content):
-            if pattern in content:
-                line_numbers = line_numbers + "," + str(idx + 1)
-        return line_numbers.lstrip(
-            ","
-        ) if line_numbers else "No Line containing the command in Docker file"
+        if pattern and not regex:
+            for idx, content in enumerate(self._docker_content):
+                if pattern in content:
+                    line_numbers = line_numbers + "," + str(idx + 1)
+            return line_numbers.lstrip(
+                ","
+            ) if line_numbers else "No Line containing the command in Docker file"
+        # else:
+        #     compiled_pattern = re.compile(pattern)
+        #     for idx, content in enumerate(self._docker_content):
+        #         if re.match(compiled_pattern, content):
+        #             line_numbers = line_numbers + "," + str(idx + 1)
+        #     return line_numbers.lstrip(
+        #         ","
+        #     ) if line_numbers else "No Line containing the command in Docker file"
 
     def _check_sudo_presence(self):
         return True if "SUDO" or "sudo" in self._docker_content else False
@@ -119,5 +133,23 @@ class RuleEngine:
         return {
             "Line #": self._get_line_number("FROM "),
             "Violation": "Tag the version of image explicitly",
+            "Recommendation": self._docker_rules['base_image_rule']
+        }
+
+    def _check_for_dists(self):
+        pip_install_cmds = [
+            command for command in self._docker_content
+            if "pip install" in command
+        ]
+        dists = [
+            pip_install_cmd for pip_install_cmd in pip_install_cmds
+            if ".tar.gz" or ".whl" in pip_install_cmd
+        ]
+        return True if dists else False
+
+    def _get_dists_violation(self):
+        return {
+            "Line #": self._get_line_number(pattern=".tar.gz"),
+            "Violation": "Dist files like .tar.gz/.whl shouldn't be copied",
             "Recommendation": self._docker_rules['base_image_rule']
         }

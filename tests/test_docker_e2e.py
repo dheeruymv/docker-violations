@@ -40,12 +40,19 @@ class TestDockerViolation(unittest.TestCase):
             'Violation':
             'ADD is not preferred for copying of file(s)',
             'Recommendation':
-            'COPY is preferred as copy does the basic copy which is transparent than ADD'
+            'COPY is preferred. As copy does the basic copy which is transparent than ADD'
         }, {
             'Line #':
             '6',
             'Violation':
             'Tag the version of image explicitly',
+            'Recommendation':
+            "Tag the version of the image explicitly, never rely on 'latest' as tag"
+        }, {
+            'Line #':
+            '80,88',
+            'Violation':
+            "Dist files like .tar.gz/.whl shouldn't be copied",
             'Recommendation':
             "Tag the version of the image explicitly, never rely on 'latest' as tag"
         }]

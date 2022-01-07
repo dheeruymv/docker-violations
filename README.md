@@ -8,6 +8,7 @@ Currently it has support for the below commands.
 - MKDIR
 - SUDO
 - ADD
+- DIST FILE CHECK (like .tar.gz/.wl)
 - ENTRYPOINT
 
 How to install it?
