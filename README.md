@@ -2,12 +2,13 @@
 
 This tool finds the violations in the docker file.
 
-Currently it has support for the below commands.
+Currently tool can find violations in the below commands.
 
 - LABEL
 - MKDIR
 - SUDO
 - ADD
+- WORKDIR
 - DIST FILE CHECK (like .tar.gz/.wl)
 - ENTRYPOINT
 

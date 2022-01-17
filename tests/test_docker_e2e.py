@@ -13,6 +13,7 @@ class TestDockerViolation(unittest.TestCase):
     def test_docker_violations_e2e(self):
         sys.argv[1] = get_resource_path("sample_dockerfile")
         actual = main()
+        print("Actual has ", actual)
         expected = [{
             'Line #':
             '60,72',
@@ -55,6 +56,13 @@ class TestDockerViolation(unittest.TestCase):
             "Dist files like .tar.gz/.whl shouldn't be copied",
             'Recommendation':
             "Tag the version of the image explicitly, never rely on 'latest' as tag"
+        }, {
+            'Line #':
+            '71',
+            'Violation':
+            'Use WORKDIR, not cd',
+            'Recommendation':
+            'Rather than proliferating instructions like RUN cd.. && do-something, use WORKDIR. Use WORKDIR for Clarity and reliability.'
         }]
         self.assertEqual(actual, expected)
 

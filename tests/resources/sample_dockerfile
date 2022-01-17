@@ -68,7 +68,7 @@ RUN chmod 777 /ngdb
 ENV NGDB_HOME /opt/nsn/ngdb
 
 # Creating needed directory structure
-WORKDIR $NGDB_HOME/generalmonitoring/
+RUN cd $NGDB_HOME/generalmonitoring/
 RUN mkdir -p scripts utils python-dependencies ext-dependencies configMap output resources tools /usr/local/lib/python3.7/site-packages/logging
 
 # Installing the Python 3rd Party Packages

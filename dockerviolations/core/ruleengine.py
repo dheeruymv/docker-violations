@@ -23,7 +23,9 @@ class RuleEngine:
             "base_image_rule":
             "Tag the version of the image explicitly, never rely on 'latest' as tag",
             "dist_rule":
-            "Dist files like .tar.gz/.whl should be downloaded from the repo"
+            "Dist files like .tar.gz/.whl should be downloaded from the repo",
+            "cd_workdir_rule":
+            "Rather than proliferating instructions like RUN cd.. && do-something, use WORKDIR. Use WORKDIR for Clarity and reliability."
         }
 
     def get_violations(self):
@@ -48,6 +50,8 @@ class RuleEngine:
             violations.append(self._get_base_image_violation())
         if self._check_for_dists():
             violations.append(self._get_dists_violation())
+        if self._check_for_cd_cmd():
+            violations.append(self._get_cd_cmd_violations())
         return violations
 
     def _is_entrypoint_or_cmd_present(self):
@@ -152,4 +156,17 @@ class RuleEngine:
             "Line #": self._get_line_number(pattern=".tar.gz"),
             "Violation": "Dist files like .tar.gz/.whl shouldn't be copied",
             "Recommendation": self._docker_rules['base_image_rule']
+        }
+
+    def _check_for_cd_cmd(self):
+        run_cd_cmds = [
+            command for command in self._docker_content if "RUN cd" in command
+        ]
+        return True if run_cd_cmds else False
+
+    def _get_cd_cmd_violations(self):
+        return {
+            "Line #": self._get_line_number(pattern="RUN cd"),
+            "Violation": "Use WORKDIR, not cd",
+            "Recommendation": self._docker_rules['cd_workdir_rule']
         }
