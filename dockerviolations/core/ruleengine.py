@@ -4,6 +4,7 @@ Created on 20-Nov-2021
 @author: dheer
 '''
 import re
+from bin.dockerviolations.utils.general_util import is_number_exists
 
 
 class RuleEngine:
@@ -131,7 +132,7 @@ class RuleEngine:
         base_image_line = [
             command for command in self._docker_content if "FROM" in command
         ][0]
-        return True if ":" not in base_image_line else False
+        return True if ":" not in base_image_line and not is_number_exists(base_image_line) else False
 
     def _get_base_image_violation(self):
         return {

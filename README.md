@@ -4,6 +4,7 @@ This tool finds the violations in the docker file.
 
 Currently tool can find violations in the below commands.
 
+- FROM (IMAGE CHECK)
 - LABEL
 - MKDIR
 - SUDO
