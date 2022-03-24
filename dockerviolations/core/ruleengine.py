@@ -3,31 +3,15 @@ Created on 20-Nov-2021
 
 @author: dheer
 '''
-import re
 from bin.dockerviolations.utils.general_util import is_number_exists
+from dockerviolations.utils.property_util import get_recommendation_from_prop
 
 
 class RuleEngine:
     def __init__(self, content_list):
         self._docker_content = content_list
-        self._docker_rules = {
-            'mkdir_rule':
-            "Group all 'mkdir' commands into single layer",
-            'label_not_present_rule':
-            "Use LABEL Command to organize images by project, recording license info, to aid in automation",
-            'multiple_labels_rule':
-            "If docker version < 1.10: Merge multiple LABEL commands to single LABEL command. If docker version >=1.10: ignore the recommendation, but as good practice merge LABEL to single command",
-            "sudo_rule":
-            "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu) ",
-            "add_rule":
-            "COPY is preferred. As copy does the basic copy which is transparent than ADD",
-            "base_image_rule":
-            "Tag the version of the image explicitly, never rely on 'latest' as tag",
-            "dist_rule":
-            "Dist files like .tar.gz/.whl should be downloaded from the repo",
-            "cd_workdir_rule":
-            "Rather than proliferating instructions like RUN cd.. && do-something, use WORKDIR. Use WORKDIR for Clarity and reliability."
-        }
+        self._docker_prop_file = "docker_rule_recommendation.properties"
+        self._rr_section = "RRSection"
 
     def get_violations(self):
         ''' Returns the violations like 
@@ -40,7 +24,8 @@ class RuleEngine:
                 "Violation":
                 "MKDIR command can be improved",
                 "Recommendation":
-                self._docker_rules['mkdir_rule']
+                get_recommendation_from_prop(self._docker_prop_file,
+                                             self._rr_section, 'mkdir_rule')
             })
         violations.append(self._get_label_violations())
         if self._check_sudo_presence():
@@ -72,15 +57,25 @@ class RuleEngine:
         label_counter = self._get_label_counter()
         if label_counter == 0:
             return {
-                "Line #": self._get_line_number("LABEL"),
-                "Violation": "LABEL command is not present",
-                "Recommendation": self._docker_rules['label_not_present_rule']
+                "Line #":
+                self._get_line_number("LABEL"),
+                "Violation":
+                "LABEL command is not present",
+                "Recommendation":
+                get_recommendation_from_prop(self._docker_prop_file,
+                                             self._rr_section,
+                                             'label_not_present_rule')
             }
         elif label_counter > 1:
             return {
-                "Line #": self._get_line_number("LABEL"),
-                "Violation": "Multiple LABEL commands are present",
-                "Recommendation": self._docker_rules['multiple_labels_rule']
+                "Line #":
+                self._get_line_number("LABEL"),
+                "Violation":
+                "Multiple LABEL commands are present",
+                "Recommendation":
+                get_recommendation_from_prop(self._docker_prop_file,
+                                             self._rr_section,
+                                             'multiple_labels_rule')
             }
 
     def _get_label_counter(self):
@@ -116,29 +111,42 @@ class RuleEngine:
 
     def _get_sudo_violation(self):
         return {
-            "Line #": self._get_line_number("sudo "),
-            "Violation": "'sudo' found, Avoid installing!!",
-            "Recommendation": self._docker_rules['sudo_rule']
+            "Line #":
+            self._get_line_number("sudo "),
+            "Violation":
+            "'sudo' found, Avoid installing!!",
+            "Recommendation":
+            get_recommendation_from_prop(self._docker_prop_file,
+                                         self._rr_section, 'sudo_rule')
         }
 
     def _get_add_violation(self):
         return {
-            "Line #": self._get_line_number("ADD "),
-            "Violation": "ADD is not preferred for copying of file(s)",
-            "Recommendation": self._docker_rules['add_rule']
+            "Line #":
+            self._get_line_number("ADD "),
+            "Violation":
+            "ADD is not preferred for copying of file(s)",
+            "Recommendation":
+            get_recommendation_from_prop(self._docker_prop_file,
+                                         self._rr_section, 'add_rule')
         }
 
     def _check_base_image_violation(self):
         base_image_line = [
             command for command in self._docker_content if "FROM" in command
         ][0]
-        return True if ":" not in base_image_line and not is_number_exists(base_image_line) else False
+        return True if ":" not in base_image_line and not is_number_exists(
+            base_image_line) else False
 
     def _get_base_image_violation(self):
         return {
-            "Line #": self._get_line_number("FROM "),
-            "Violation": "Tag the version of image explicitly",
-            "Recommendation": self._docker_rules['base_image_rule']
+            "Line #":
+            self._get_line_number("FROM "),
+            "Violation":
+            "Tag the version of image explicitly",
+            "Recommendation":
+            get_recommendation_from_prop(self._docker_prop_file,
+                                         self._rr_section, 'base_image_rule')
         }
 
     def _check_for_dists(self):
@@ -154,9 +162,13 @@ class RuleEngine:
 
     def _get_dists_violation(self):
         return {
-            "Line #": self._get_line_number(pattern=".tar.gz"),
-            "Violation": "Dist files like .tar.gz/.whl shouldn't be copied",
-            "Recommendation": self._docker_rules['base_image_rule']
+            "Line #":
+            self._get_line_number(pattern=".tar.gz"),
+            "Violation":
+            "Dist files like .tar.gz/.whl shouldn't be copied",
+            "Recommendation":
+            get_recommendation_from_prop(self._docker_prop_file,
+                                         self._rr_section, 'base_image_rule')
         }
 
     def _check_for_cd_cmd(self):
@@ -167,7 +179,11 @@ class RuleEngine:
 
     def _get_cd_cmd_violations(self):
         return {
-            "Line #": self._get_line_number(pattern="RUN cd"),
-            "Violation": "Use WORKDIR, not cd",
-            "Recommendation": self._docker_rules['cd_workdir_rule']
+            "Line #":
+            self._get_line_number(pattern="RUN cd"),
+            "Violation":
+            "Use WORKDIR, not cd",
+            "Recommendation":
+            get_recommendation_from_prop(self._docker_prop_file,
+                                         self._rr_section, 'cd_workdir_rule')
         }

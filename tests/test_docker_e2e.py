@@ -34,7 +34,7 @@ class TestDockerViolation(unittest.TestCase):
             'Violation':
             "'sudo' found, Avoid installing!!",
             'Recommendation':
-            "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu) "
+            "Avoid installing (or) using 'sudo' as it has unpredictable TTY and signal-forwarding behaviour, use 'gosu' (https://github.com/tianon/gosu)"
         }, {
             'Line #':
             '61',

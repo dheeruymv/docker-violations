@@ -20,11 +20,9 @@ def get_resource_path(relative_path_to_resources):
     return pathname.resolve()
 
 
-
 def is_number_exists(inp_str):
     is_num_exists = False
     for char in inp_str:
         if char.isdigit():
             is_num_exists = True
     return is_num_exists
-    

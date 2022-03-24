@@ -3,7 +3,7 @@
 #
 
 # Getting python and alpine 3.7 image from Repo
-FROM hub.docker-io.com/python3.7-alpine3.8
+FROM hub.docker-io.com/python-alpine
 
 # Setting revision to V3.8 to pull musl & other os packages
 ARG alpine_repo_fqdn=hub.docker-io.com
