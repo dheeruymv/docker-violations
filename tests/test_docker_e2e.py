@@ -55,7 +55,7 @@ class TestDockerViolation(unittest.TestCase):
             'Violation':
             "Dist files like .tar.gz/.whl shouldn't be copied",
             'Recommendation':
-            "Tag the version of the image explicitly, never rely on 'latest' as tag"
+            "Dist files like .tar.gz/.whl should be downloaded from the repo"
         }, {
             'Line #':
             '71',

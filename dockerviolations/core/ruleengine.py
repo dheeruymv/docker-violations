@@ -168,7 +168,7 @@ class RuleEngine:
             "Dist files like .tar.gz/.whl shouldn't be copied",
             "Recommendation":
             get_recommendation_from_prop(self._docker_prop_file,
-                                         self._rr_section, 'base_image_rule')
+                                         self._rr_section, 'dist_rule')
         }
 
     def _check_for_cd_cmd(self):
