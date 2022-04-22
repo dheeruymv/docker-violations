@@ -1,6 +1,6 @@
 # Docker-violations
 
-This tool finds the violations in the docker file.
+This is an open source project for the static analysis of vulnerabilities in Dockerfile.
 
 Currently tool can find violations in the below commands.
 
