@@ -55,7 +55,7 @@ class TestDockerViolation(unittest.TestCase):
             'Violation':
             "Dist files like .tar.gz/.whl shouldn't be copied",
             'Recommendation':
-            "Dist files like .tar.gz/.whl should be downloaded from the repo"
+            "Dist files like .tar.gz/.whl should be installed directly from the internal private repo's to decrease size of docker image"
         }, {
             'Line #':
             '71',

@@ -27,7 +27,7 @@ class DockerViolations:
     def run(self):
         content = FileReader().get_content(self._file_name)
         violations = Parser(content).parse_for_violations()
-        logger.info("Violations in main has %s", violations)
+        logger.info("Violations in main has {}".format(violations))
         Generator(violations).generate_report()
         return violations
 
