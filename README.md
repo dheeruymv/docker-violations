@@ -19,7 +19,7 @@ How to install it?
   
   - Run "pip install docker-violations-0.1.tar.gz".
 
-Docker Violations tool is installed.
+Docker Violations tool will be installed.
 
 How to Run it?
 
